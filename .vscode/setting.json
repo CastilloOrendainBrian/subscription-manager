@@ -1,0 +1,9 @@
+{
+    "cSpell.language": "en,es",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "intelephense.diagnostics.undefinedMethods": false,
+    "intelephense.diagnostics.rules": {
+        "P1013": false
+    }
+}

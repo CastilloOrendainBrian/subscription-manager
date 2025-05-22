@@ -1,0 +1,38 @@
+# Ignorar dependencias que se instalarán en la imagen
+/vendor
+/node_modules
+
+# Archivos de entorno y configuración local
+.env
+.env.* 
+!.env.production
+
+# Archivos de caché y logs
+/storage/logs
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+.phpunit.result.cache
+
+# IDEs y herramientas del desarrollador
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de pruebas
+/tests/
+/coverage/
+
+# Archivos de despliegue y scripts locales
+deploy.sh
+docker-compose*.yml
+README.md
+
+# Git y control de versiones
+.git
+.gitignore

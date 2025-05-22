@@ -1,0 +1,57 @@
+services:
+  subscriptions-psql:
+    image: postgres:17.5
+    container_name: subscriptions-psql
+    ports:
+      - 5533:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: subscriptions
+    networks:
+      - subscriptions-network
+    volumes:
+      - subscriptions-db:/var/lib/postgresql/data
+      - ./config/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  subscriptions-backend:
+    build:
+      args:
+        USER_ID: 1000
+        GROUP_ID: 1000
+        USER_NAME: admin
+        GROUP_NAME: admin
+      context: .
+      dockerfile: ./backend.Dockerfile
+    image: "subscriptions-backend"
+    container_name: subscriptions-backend
+    working_dir: /var/www/
+    networks:
+      - subscriptions-network
+    volumes:
+      - ./backend:/var/www/
+    depends_on:
+      - subscriptions-psql
+
+  subscriptions-server:
+    image: nginx:alpine
+    container_name: subscriptions-server
+    ports:
+      - 8001:8000
+    networks:
+      - subscriptions-network
+    volumes:
+      - ./backend:/var/www/
+      - ./config/nginx/app.conf:/etc/nginx/conf.d/default.conf
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - subscriptions-backend
+
+networks:
+  subscriptions-network:
+    driver: bridge
+    name: subscriptions-network
+
+volumes:
+  subscriptions-db:
+    name: subscriptions-db
