@@ -1,17 +1,15 @@
-# Usa una imagen base de PHP con Alpine
-FROM php:8.2-fpm-alpine
+# Use a PHP base image with Alpine
+FROM php:8.4-fpm-alpine
 
-# Define variables de entorno y trabaja desde la raíz del proyecto
+# Define environment variables and work from the project root
 ARG USER_ID
 ARG GROUP_ID
 ARG USER_NAME
 ARG GROUP_NAME
 
-ENV TZ=America/Mexico_City
-
 WORKDIR /var/www/
 
-# Instala dependencias necesarias para PHP y el entorno de desarrollo
+# Install required dependencies for PHP and the development environment
 RUN apk update && apk add --no-cache \
     tzdata \
     oniguruma-dev \
@@ -32,16 +30,17 @@ RUN apk update && apk add --no-cache \
     make \
     autoconf
 
-# Configura zona horaria
-RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
-    echo "${TZ}" > /etc/timezone && \
-    apk del tzdata
+ENV TZ=America/Mexico_City
 
-# Agrega grupo y usuario personalizados
+# Set timezone
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo "$TZ" > /etc/timezone
+
+# Add custom group and user
 RUN addgroup -g $GROUP_ID $GROUP_NAME && \
     adduser -D -u $USER_ID -G $GROUP_NAME $USER_NAME
 
-# Instala extensiones de PHP requeridas
+# Install required PHP extensions
 RUN docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg && \
@@ -52,18 +51,18 @@ RUN docker-php-ext-configure gd \
     zip \
     gd
 
-# Copia Composer desde la imagen oficial
+# Copy Composer from the official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copia archivos del proyecto
+# Copy project files
 COPY ./backend /var/www/
 COPY ./config/php/php.ini /usr/local/etc/php/php.ini
 
-# Instala dependencias de PHP vía Composer
+# Install PHP dependencies via Composer
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader --no-scripts
 
-# Cambia propiedad de los archivos al usuario creado
+# Change ownership of the files to the created user
 RUN chown -R $USER_NAME:$GROUP_NAME /var/www/
 
-# Cambia al usuario no root
+# Switch to non-root user
 USER $USER_NAME
