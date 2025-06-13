@@ -17,12 +17,12 @@ class StoreCatCurrencyRequest extends FormRequest
     /**
      * Prepare the data for validation.
      */
-    // protected function prepareForValidation(): void
-    // {
-    //     $this->merge([
-    //         'example' => $this->input('example'),
-    //     ]);
-    // }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->input('active', true), // Default to true if not provided
+        ]);
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -34,6 +34,7 @@ class StoreCatCurrencyRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'acronym' => ['required', 'string', 'max:5'],
+            'active' => ['sometimes', 'boolean'],
         ];
     }
 }

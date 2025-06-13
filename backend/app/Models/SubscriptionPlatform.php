@@ -89,7 +89,7 @@ class SubscriptionPlatform extends Model
 
     public function currency()
     {
-        return $this->belongsTo(CatCurrency::class, 'cat_currency_id', 'id');
+        return $this->belongsTo(\App\Models\Catalog\CatCurrency::class, 'cat_currency_id', 'id');
     }
 
     public function recurrence()

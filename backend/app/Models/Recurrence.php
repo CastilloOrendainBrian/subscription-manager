@@ -91,4 +91,24 @@ class Recurrence extends Model
         return $this->hasMany(SubscriptionPlatform::class, 'recurrence_id');
     }
 
+    public function timeUnit()
+    {
+        return $this->belongsTo(\App\Models\Catalog\CatTimeUnit::class, 'cat_time_unit_id', 'id');
+    }
+
+    public function day()
+    {
+        return $this->belongsTo(\App\Models\Catalog\CatDay::class, 'cat_day_id', 'id');
+    }
+
+    public function month()
+    {
+        return $this->belongsTo(\App\Models\Catalog\CatMonth::class, 'cat_month_id', 'id');
+    }
+
+    public function weekMonth()
+    {
+        return $this->belongsTo(\App\Models\Catalog\CatWeekMonth::class, 'cat_week_month_id', 'id');
+    }
+
 }

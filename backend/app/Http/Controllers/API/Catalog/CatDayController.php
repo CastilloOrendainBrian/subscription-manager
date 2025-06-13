@@ -20,11 +20,7 @@ class CatDayController extends Controller
 
     public function store(StoreCatDayRequest $request)
     {
-        $catDay = CatDay::create([
-            'name' => $request->name,
-            'acronym' => $request->acronym,
-            'active' => true,
-        ]);
+        $catDay = CatDay::create($request->validated());
 
         return new CatDayResource($catDay);
     }

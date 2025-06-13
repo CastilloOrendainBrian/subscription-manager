@@ -20,11 +20,7 @@ class CatMonthController extends Controller
 
     public function store(StoreCatMonthRequest $request)
     {
-        $catMonth = CatMonth::create([
-            'name' => $request->name,
-            'acronym' => $request->acronym,
-            'active' => true,
-        ]);
+        $catMonth = CatMonth::create($request->validated());
 
         return new CatMonthResource($catMonth);
     }

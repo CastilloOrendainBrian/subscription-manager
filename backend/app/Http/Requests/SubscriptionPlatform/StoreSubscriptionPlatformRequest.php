@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Catalog\TimeUnit;
+namespace App\Http\Requests\SubscriptionPlatform;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCatTimeUnitRequest extends FormRequest
+class StoreSubscriptionPlatformRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +20,10 @@ class StoreCatTimeUnitRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
+            'members' => $this->input('members', 1), // Default to 1 if not provided
             'active' => $this->input('active', true), // Default to true if not provided
+            'cat_currency_id' => $this->input('catCurrencyId'),
+            'recurrence_id' => $this->input('recurrenceId'),
         ]);
     }
 
@@ -33,7 +36,12 @@ class StoreCatTimeUnitRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'active' => ['sometimes', 'boolean'],
+            'type' => ['required', 'string', 'max:255'],
+            'members' => ['required', 'integer', 'min:1'],
+            'price' => ['required', 'numeric', 'min:1'],
+            'active' => ['required', 'boolean'],
+            'cat_currency_id' => ['required', 'exists:cat_currency,id'],
+            'recurrence_id' => ['required', 'exists:recurrence,id'],
         ];
     }
 }

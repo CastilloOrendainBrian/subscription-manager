@@ -17,12 +17,12 @@ class StoreCatMonthRequest extends FormRequest
     /**
      * Prepare the data for validation.
      */
-    // protected function prepareForValidation(): void
-    // {
-    //     $this->merge([
-    //         'example' => $this->input('example'),
-    //     ]);
-    // }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->input('active', true), // Default to true if not provided
+        ]);
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -33,6 +33,7 @@ class StoreCatMonthRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'active' => ['sometimes', 'boolean'], // Optional, defaults to true if not provided
         ];
     }
 }

@@ -20,12 +20,7 @@ class CatCurrencyController extends Controller
 
     public function store(StoreCatCurrencyRequest $request)
     {
-        $catCurrency = CatCurrency::create([
-            'name' => $request->name,
-            'acronym' => $request->acronym,
-            'active' => true,
-        ]);
-
+        $catCurrency = CatCurrency::create($request->validated());
         return new CatCurrencyResource($catCurrency);
     }
 

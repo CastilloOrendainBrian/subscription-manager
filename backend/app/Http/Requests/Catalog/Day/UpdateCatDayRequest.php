@@ -17,12 +17,12 @@ class UpdateCatDayRequest extends FormRequest
     /**
      * Prepare the data for validation.
      */
-    // protected function prepareForValidation(): void
-    // {
-    //     $this->merge([
-    //         'example' => $this->input('example'),
-    //     ]);
-    // }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'active' => $this->input('active', true), // Default to true if not provided
+        ]);
+    }
 
     /**
      * Get the validation rules that apply to the request.

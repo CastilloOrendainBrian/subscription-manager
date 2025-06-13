@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Catalog\WeekMonth;
+namespace App\Http\Requests\SubscriptionPlatform;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCatWeekMonthRequest extends FormRequest
+class UpdateSubscriptionPlatformRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,6 +21,8 @@ class UpdateCatWeekMonthRequest extends FormRequest
     {
         $this->merge([
             'active' => $this->input('active', true), // Default to true if not provided
+            'cat_currency_id' => $this->input('catCurrencyId'),
+            'recurrence_id' => $this->input('recurrenceId'),
         ]);
     }
 
@@ -33,7 +35,12 @@ class UpdateCatWeekMonthRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'type' => ['sometimes', 'required', 'string', 'max:255'],
+            'members' => ['sometimes', 'required', 'integer', 'min:1'],
+            'price' => ['sometimes', 'required', 'numeric', 'min:1'],
             'active' => ['sometimes', 'required', 'boolean'],
+            'cat_currency_id' => ['sometimes', 'required', 'exists:cat_currency,id'],
+            'recurrence_id' => ['sometimes', 'required', 'exists:recurrence,id'],
         ];
     }
 }

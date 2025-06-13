@@ -20,11 +20,7 @@ class CatTimeUnitController extends Controller
 
     public function store(StoreCatTimeUnitRequest $request)
     {
-        $catTimeUnit = CatTimeUnit::create([
-            'name' => $request->name,
-            'acronym' => $request->acronym,
-            'active' => true,
-        ]);
+        $catTimeUnit = CatTimeUnit::create($request->validated());
 
         return new CatTimeUnitResource($catTimeUnit);
     }
