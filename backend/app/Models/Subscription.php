@@ -50,26 +50,16 @@ class Subscription extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'number_members_paying' => 'integer',
-            'active' => 'boolean',
-            'user_id' => 'integer',
-            'subscription_platform_id' => 'integer',
-        ];
-    }
+    protected $casts = [
+        'number_members_paying' => 'integer',
+        'active' => 'boolean',
+        'user_id' => 'integer',
+        'subscription_platform_id' => 'integer',
+    ];
 
     /**
      * The attributes that should be cast to native types.

@@ -5,39 +5,43 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\StoreSubscriptionRequest;
 use App\Http\Requests\Subscription\UpdateSubscriptionRequest;
-use App\Http\Resources\SubscriptionResource;
+use App\Services\SubscriptionService;
 use App\Models\Subscription;
 
 use Illuminate\Http\Response;
 
 class SubscriptionController extends Controller
 {
+    protected $subscriptionService;
+
+    public function __construct(SubscriptionService $subscriptionService)
+    {
+        $this->subscriptionService = $subscriptionService;
+    }
+
     public function index()
     {
-        $subscription = Subscription::all();
-        return SubscriptionResource::collection($subscription);
+        return $this->subscriptionService->all();
     }
 
     public function store(StoreSubscriptionRequest $request)
     {
-        $subscription = Subscription::create($request->validated());
-        return new SubscriptionResource($subscription);
+        return $this->subscriptionService->create($request->validated());
     }
 
     public function show(Subscription $subscription)
     {
-        return new SubscriptionResource($subscription);
+        return $this->subscriptionService->find($subscription);
     }
 
     public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
     {
-        $subscription->update($request->validated());
-        return new SubscriptionResource($subscription);
+        return $this->subscriptionService->update($subscription, $request->validated());
     }
 
     public function destroy(Subscription $subscription)
     {
-        $subscription->delete();
+        $this->subscriptionService->delete($subscription);
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

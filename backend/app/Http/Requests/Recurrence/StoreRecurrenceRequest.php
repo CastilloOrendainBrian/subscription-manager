@@ -19,17 +19,39 @@ class StoreRecurrenceRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'start_date' => $this->input('startDate'),
-            'end_date' => $this->input('endDate'),
-            'quantity' => $this->input('quantity', 1), // Default to 1 if not provided
-            'cat_time_unit_id' => $this->input('catTimeUnitId'),
-            'cat_day_id' => $this->input('catDayId'),
-            'cat_month_id' => $this->input('catMonthId'),
-            'date_month' => $this->input('dateMonth'),
-            'cat_week_month_id' => $this->input('catWeekMonthId'),
-            'active' => $this->input('active', true), // Default to true if not provided
-        ]);
+        $map = [
+            'startDate' => 'start_date',
+            'endDate' => 'end_date',
+            'quantity' => 'quantity',
+            'catTimeUnitId' => 'cat_time_unit_id',
+            'catDayId' => 'cat_day_id',
+            'catMonthId' => 'cat_month_id',
+            'dateMonth' => 'date_month',
+            'catWeekMonthId' => 'cat_week_month_id',
+            'active' => 'active',
+        ];
+
+        $defaults = [
+            'quantity' => 1,
+            'active' => true,
+        ];
+
+        $data = [];
+        foreach ($map as $inputKey => $dbKey) {
+            if ($this->has($inputKey)) {
+            $data[$dbKey] = $this->input($inputKey, $defaults[$inputKey] ?? null);
+            }
+        }
+
+        // Set defaults if not present
+        foreach ($defaults as $inputKey => $default) {
+            $dbKey = $map[$inputKey];
+            if (!isset($data[$dbKey])) {
+            $data[$dbKey] = $default;
+            }
+        }
+
+        $this->merge($data);
     }
 
     /**
@@ -48,7 +70,7 @@ class StoreRecurrenceRequest extends FormRequest
             'cat_month_id' => ['sometimes', 'nullable', 'exists:cat_month,id'],
             'date_month' => ['sometimes', 'nullable', 'integer', 'between:1,31'],
             'cat_week_month_id' => ['sometimes', 'nullable', 'exists:cat_week_month,id'],
-            'active' => ['sometimes', 'boolean'],
+            'active' => ['required', 'boolean'],
         ];
     }
 }

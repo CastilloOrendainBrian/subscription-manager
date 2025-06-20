@@ -5,40 +5,43 @@ namespace App\Http\Controllers\API\Catalog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\Month\StoreCatMonthRequest;
 use App\Http\Requests\Catalog\Month\UpdateCatMonthRequest;
-use App\Http\Resources\Catalog\CatMonthResource;
+use App\Services\Catalog\CatMonthService;
 use App\Models\Catalog\CatMonth;
 
 use Illuminate\Http\Response;
 
 class CatMonthController extends Controller
 {
+    protected $catMonthService;
+
+    public function __construct(CatMonthService $catMonthService)
+    {
+        $this->catMonthService = $catMonthService;
+    }
+
     public function index()
     {
-        $catMonth = CatMonth::all();
-        return CatMonthResource::collection($catMonth);
+        return $this->catMonthService->all();
     }
 
     public function store(StoreCatMonthRequest $request)
     {
-        $catMonth = CatMonth::create($request->validated());
-
-        return new CatMonthResource($catMonth);
+        return $this->catMonthService->create($request->validated());
     }
 
     public function show(CatMonth $catMonth)
     {
-        return new CatMonthResource($catMonth);
+        return $this->catMonthService->find($catMonth);
     }
 
     public function update(UpdateCatMonthRequest $request, CatMonth $catMonth)
     {
-        $catMonth->update($request->validated());
-        return new CatMonthResource($catMonth);
+        return $this->catMonthService->update($catMonth, $request->validated());
     }
 
     public function destroy(CatMonth $catMonth)
     {
-        $catMonth->delete();
+        $this->catMonthService->delete($catMonth);
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

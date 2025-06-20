@@ -19,16 +19,24 @@ class UpdateRecurrenceRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'start_date' => $this->input('startDate'),
-            'end_date' => $this->input('endDate'),
-            'cat_time_unit_id' => $this->input('catTimeUnitId'),
-            'cat_day_id' => $this->input('catDayId'),
-            'cat_month_id' => $this->input('catMonthId'),
-            'date_month' => $this->input('dateMonth'),
-            'cat_week_month_id' => $this->input('catWeekMonthId'),
-            'active' => $this->input('active', true), // Default to true if not provided
-        ]);
+        $map = [
+            'startDate' => 'start_date',
+            'endDate' => 'end_date',
+            'catTimeUnitId' => 'cat_time_unit_id',
+            'catDayId' => 'cat_day_id',
+            'catMonthId' => 'cat_month_id',
+            'dateMonth' => 'date_month',
+            'catWeekMonthId' => 'cat_week_month_id',
+        ];
+
+        $data = [];
+        foreach ($map as $inputKey => $dbKey) {
+            if ($this->has($inputKey)) {
+            $data[$dbKey] = $this->input($inputKey);
+            }
+        }
+
+        $this->merge($data);
     }
 
     /**
@@ -39,10 +47,10 @@ class UpdateRecurrenceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_date' => ['sometimes', 'required', 'date'],
+            'start_date' => ['sometimes', 'date'],
             'end_date' => ['sometimes', 'nullable', 'date', 'after_or_equal:start_date'],
-            'quantity' => ['sometimes', 'required', 'integer', 'min:1'],
-            'cat_time_unit_id' => ['sometimes', 'required', 'exists:cat_time_unit,id'],
+            'quantity' => ['sometimes', 'integer', 'min:1'],
+            'cat_time_unit_id' => ['sometimes', 'exists:cat_time_unit,id'],
             'cat_day_id' => ['sometimes', 'nullable', 'exists:cat_day,id'],
             'cat_month_id' => ['sometimes', 'nullable', 'exists:cat_month,id'],
             'date_month' => ['sometimes', 'nullable', 'integer', 'between:1,31'],

@@ -48,33 +48,23 @@ class CatWeekMonth extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'name' => 'string',
-            'active' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'name' => 'string',
+        'active' => 'boolean',
+    ];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @return array<string, string>
      */
-    public function recurrence()
+    public function recurrences()
     {
-        return $this->hasOne(\App\Models\Recurrence::class, 'week_month_id');
+        return $this->hasMany(\App\Models\Recurrence::class, 'cat_week_month_id');
     }
 
 }

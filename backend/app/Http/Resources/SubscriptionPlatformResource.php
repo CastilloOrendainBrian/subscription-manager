@@ -23,8 +23,6 @@ class SubscriptionPlatformResource extends JsonResource
             'active' => $this->active,
             'cat_currency_id' => $this->cat_currency_id,
             'recurrence_id' => $this->recurrence_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -19,12 +19,21 @@ class UpdateSubscriptionRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'number_members_paying' => $this->input('numberMembersPaying', 1), // Default to 1 if not provided
-            'active' => $this->input('active', true), // Default to true if not provided
-            'user_id' => $this->input('userId', auth()->id()), // Default to authenticated user ID if not provided
-            'subscription_platform_id' => $this->input('subscriptionPlatformId'),
-        ]);
+        $map = [
+            'numberMembersPaying' => 'number_members_paying',
+            'userId' => 'user_id',
+            'subscriptionPlatformId' => 'subscription_platform_id',
+            'active' => 'active',
+        ];
+
+        $data = [];
+        foreach ($map as $inputKey => $dbKey) {
+            if ($this->has($inputKey)) {
+            $data[$dbKey] = $this->input($inputKey, $defaults[$inputKey] ?? null);
+            }
+        }
+
+        $this->merge($data);
     }
 
     /**
@@ -35,10 +44,10 @@ class UpdateSubscriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number_members_paying' => ['sometimes', 'required', 'integer', 'min:1'],
+            'number_members_paying' => ['sometimes', 'integer', 'min:1'],
             'active' => ['sometimes', 'boolean'],
-            'user_id' => ['sometimes', 'required', 'exists:users,id'], // Ensure user_id is provided and exists
-            'subscription_platform_id' => ['sometimes', 'required', 'exists:subscription_platform,id'],
+            'user_id' => ['sometimes', 'exists:users,id'], // Ensure user_id is provided and exists
+            'subscription_platform_id' => ['sometimes', 'exists:subscription_platform,id'],
         ];
     }
 }

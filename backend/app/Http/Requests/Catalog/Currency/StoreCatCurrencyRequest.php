@@ -34,7 +34,7 @@ class StoreCatCurrencyRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'acronym' => ['required', 'string', 'max:5'],
-            'active' => ['sometimes', 'boolean'],
+            'active' => ['required', 'boolean'],
         ];
     }
 }

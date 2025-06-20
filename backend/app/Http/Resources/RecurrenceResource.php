@@ -25,8 +25,6 @@ class RecurrenceResource extends JsonResource
             'date_month' => $this->date_month,
             'cat_week_month_id' => $this->cat_week_month_id,
             'active' => $this->active,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

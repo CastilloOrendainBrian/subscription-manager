@@ -33,7 +33,7 @@ class StoreCatTimeUnitRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'active' => ['sometimes', 'boolean'],
+            'active' => ['required', 'boolean'],
         ];
     }
 }

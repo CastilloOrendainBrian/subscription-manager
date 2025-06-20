@@ -33,7 +33,7 @@ class StoreCatMonthRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'active' => ['sometimes', 'boolean'], // Optional, defaults to true if not provided
+            'active' => ['required', 'boolean'], // Optional, defaults to true if not provided
         ];
     }
 }

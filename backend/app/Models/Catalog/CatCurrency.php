@@ -53,30 +53,18 @@ class CatCurrency extends Model
      *
      * @var array<string, string>
      */
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'name' => 'string',
+        'acronym' => 'string',
+        'active' => 'boolean',
+    ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Relación con SubscriptionPlatform.
      */
-    protected function casts(): array
+    public function subscriptionsPlatform()
     {
-        return [
-            'name' => 'string',
-            'acronym' => 'string',
-            'active' => 'boolean',
-        ];
-    }
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @return array<string, string>
-     */
-    public function subscriptionPlatform()
-    {
-        return $this->hasOne(\App\Models\SubscriptionPlatform::class, 'cat_currency_id');
+        return $this->hasMany(\App\Models\SubscriptionPlatform::class, 'cat_currency_id');
     }
 
 }

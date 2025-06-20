@@ -36,7 +36,7 @@ class StoreSubscriptionRequest extends FormRequest
     {
         return [
             'number_members_paying' => ['required', 'integer', 'min:1'],
-            'active' => ['sometimes', 'boolean'],
+            'active' => ['required', 'boolean'],
             'user_id' => ['required', 'exists:users,id'], // Ensure user_id is provided and exists
             'subscription_platform_id' => ['required', 'exists:subscription_platform,id'],
         ];

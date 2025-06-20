@@ -5,40 +5,43 @@ namespace App\Http\Controllers\API\Catalog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\Day\StoreCatDayRequest;
 use App\Http\Requests\Catalog\Day\UpdateCatDayRequest;
-use App\Http\Resources\Catalog\CatDayResource;
+use App\Services\Catalog\CatDayService;
 use App\Models\Catalog\CatDay;
 
 use Illuminate\Http\Response;
 
 class CatDayController extends Controller
 {
+    protected $catDayService;
+
+    public function __construct(CatDayService $catDayService)
+    {
+        $this->catDayService = $catDayService;
+    }
+
     public function index()
     {
-        $catDay = CatDay::all();
-        return CatDayResource::collection($catDay);
+        return $this->catDayService->all();
     }
 
     public function store(StoreCatDayRequest $request)
     {
-        $catDay = CatDay::create($request->validated());
-
-        return new CatDayResource($catDay);
+        return $this->catDayService->create($request->validated());
     }
 
     public function show(CatDay $catDay)
     {
-        return new CatDayResource($catDay);
+        return $this->catDayService->find($catDay);
     }
 
     public function update(UpdateCatDayRequest $request, CatDay $catDay)
     {
-        $catDay->update($request->validated());
-        return new CatDayResource($catDay);
+        return $this->catDayService->update($catDay, $request->validated());
     }
 
     public function destroy(CatDay $catDay)
     {
-        $catDay->delete();
+        $this->catDayService->delete($catDay);
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

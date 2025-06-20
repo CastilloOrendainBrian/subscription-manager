@@ -5,39 +5,43 @@ namespace App\Http\Controllers\API\Catalog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\Currency\StoreCatCurrencyRequest;
 use App\Http\Requests\Catalog\Currency\UpdateCatCurrencyRequest;
-use App\Http\Resources\Catalog\CatCurrencyResource;
+use App\Services\Catalog\CatCurrencyService;
 use App\Models\Catalog\CatCurrency;
 
 use Illuminate\Http\Response;
 
 class CatCurrencyController extends Controller
 {
+    protected $catCurrencyService;
+
+    public function __construct(CatCurrencyService $catCurrencyService)
+    {
+        $this->catCurrencyService = $catCurrencyService;
+    }
+
     public function index()
     {
-        $catCurrency = CatCurrency::all();
-        return CatCurrencyResource::collection($catCurrency);
+        return $this->catCurrencyService->all();
     }
 
     public function store(StoreCatCurrencyRequest $request)
     {
-        $catCurrency = CatCurrency::create($request->validated());
-        return new CatCurrencyResource($catCurrency);
+        return $this->catCurrencyService->create($request->validated());
     }
 
     public function show(CatCurrency $catCurrency)
     {
-        return new CatCurrencyResource($catCurrency);
+        return $this->catCurrencyService->find($catCurrency);
     }
 
     public function update(UpdateCatCurrencyRequest $request, CatCurrency $catCurrency)
     {
-        $catCurrency->update($request->validated());
-        return new CatCurrencyResource($catCurrency);
+        return $this->catCurrencyService->update($catCurrency, $request->validated());
     }
 
     public function destroy(CatCurrency $catCurrency)
     {
-        $catCurrency->delete();
+        $this->catCurrencyService->delete($catCurrency);
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

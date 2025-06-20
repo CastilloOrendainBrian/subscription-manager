@@ -55,38 +55,28 @@ class Recurrence extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'start_date' => 'datetime',
-            'end_date' => 'datetime',
-            'quantity' => 'integer',
-            'cat_time_unit_id' => 'integer',
-            'cat_day_id' => 'integer',
-            'cat_month_id' => 'integer',
-            'date_month' => 'integer',
-            'cat_week_month_id' => 'integer',
-            'active' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'quantity' => 'integer',
+        'cat_time_unit_id' => 'integer',
+        'cat_day_id' => 'integer',
+        'cat_month_id' => 'integer',
+        'date_month' => 'integer',
+        'cat_week_month_id' => 'integer',
+        'active' => 'boolean',
+    ];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @return array<string, string>
      */
-    public function subscriptionPlatform()
+    public function subscriptionsPlatform()
     {
         return $this->hasMany(SubscriptionPlatform::class, 'recurrence_id');
     }

@@ -20,8 +20,6 @@ class SubscriptionResource extends JsonResource
             'active' => $this->active,
             'user_id' => $this->user_id,
             'subscription_platform_id' => $this->subscription_platform_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

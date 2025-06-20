@@ -33,7 +33,7 @@ class StoreCatDayRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'active' => ['sometimes', 'required', 'boolean'], // Default to true if not provided
+            'active' => ['required', 'boolean'], // Default to true if not provided
         ];
     }
 }

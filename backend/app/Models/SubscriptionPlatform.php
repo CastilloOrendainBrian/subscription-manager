@@ -53,36 +53,26 @@ class SubscriptionPlatform extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'name' => 'string',
-            'type' => 'string',
-            'members' => 'integer',
-            'price' => 'decimal:2',
-            'active' => 'boolean',
-            'cat_currency_id' => 'integer',
-            'recurrence_id' => 'integer',
-        ];
-    }
+    protected $casts = [
+        'name' => 'string',
+        'type' => 'string',
+        'members' => 'integer',
+        'price' => 'decimal:2',
+        'active' => 'boolean',
+        'cat_currency_id' => 'integer',
+        'recurrence_id' => 'integer',
+    ];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @return array<string, string>
      */
-    public function subscription()
+    public function subscriptions()
     {
         return $this->hasMany(Subscription::class, 'subscription_platform_id');
     }

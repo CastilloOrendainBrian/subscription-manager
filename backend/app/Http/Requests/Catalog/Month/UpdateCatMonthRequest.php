@@ -20,7 +20,7 @@ class UpdateCatMonthRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'active' => $this->input('active', true), // Default to true if not provided
+            //
         ]);
     }
 
@@ -32,8 +32,8 @@ class UpdateCatMonthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'active' => ['sometimes', 'required', 'boolean'],
+            'name' => ['sometimes', 'string', 'max:255'],
+            'active' => ['sometimes', 'boolean'],
         ];
     }
 }

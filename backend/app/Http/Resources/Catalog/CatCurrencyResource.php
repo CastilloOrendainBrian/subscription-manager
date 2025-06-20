@@ -19,8 +19,10 @@ class CatCurrencyResource extends JsonResource
             'name' => $this->name,
             'acronym' => $this->acronym,
             'active' => $this->active,
-            'createdAt' => $this->created_at->toDateTimeString(),
-            'updatedAt' => $this->updated_at->toDateTimeString(),
+            // 'createdAt' => $this->created_at->toDateTimeString(),
+            // 'updatedAt' => $this->updated_at->toDateTimeString(),
+            // 'created_at' => optional($this->created_at)->toISOString(),
+            // 'updated_at' => optional($this->updated_at)->toISOString(),
         ];
     }
 }

@@ -5,40 +5,43 @@ namespace App\Http\Controllers\API\Catalog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\TimeUnit\StoreCatTimeUnitRequest;
 use App\Http\Requests\Catalog\TimeUnit\UpdateCatTimeUnitRequest;
-use App\Http\Resources\Catalog\CatTimeUnitResource;
+use App\Services\Catalog\CatTimeUnitService;
 use App\Models\Catalog\CatTimeUnit;
 
 use Illuminate\Http\Response;
 
 class CatTimeUnitController extends Controller
 {
+    protected $catTimeUnitService;
+
+    public function __construct(CatTimeUnitService $catTimeUnitService)
+    {
+        $this->catTimeUnitService = $catTimeUnitService;
+    }
+
     public function index()
     {
-        $catTimeUnit = CatTimeUnit::all();
-        return CatTimeUnitResource::collection($catTimeUnit);
+        return $this->catTimeUnitService->all();
     }
 
     public function store(StoreCatTimeUnitRequest $request)
     {
-        $catTimeUnit = CatTimeUnit::create($request->validated());
-
-        return new CatTimeUnitResource($catTimeUnit);
+        return $this->catTimeUnitService->create($request->validated());
     }
 
     public function show(CatTimeUnit $catTimeUnit)
     {
-        return new CatTimeUnitResource($catTimeUnit);
+        return $this->catTimeUnitService->find($catTimeUnit);
     }
 
     public function update(UpdateCatTimeUnitRequest $request, CatTimeUnit $catTimeUnit)
     {
-        $catTimeUnit->update($request->validated());
-        return new CatTimeUnitResource($catTimeUnit);
+        return $this->catTimeUnitService->update($catTimeUnit, $request->validated());
     }
 
     public function destroy(CatTimeUnit $catTimeUnit)
     {
-        $catTimeUnit->delete();
+        $this->catTimeUnitService->delete($catTimeUnit);
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

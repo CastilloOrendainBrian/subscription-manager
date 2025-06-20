@@ -5,40 +5,43 @@ namespace App\Http\Controllers\API\Catalog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\WeekMonth\StoreCatWeekMonthRequest;
 use App\Http\Requests\Catalog\WeekMonth\UpdateCatWeekMonthRequest;
-use App\Http\Resources\Catalog\CatWeekMonthResource;
+use App\Services\Catalog\CatWeekMonthService;
 use App\Models\Catalog\CatWeekMonth;
 
 use Illuminate\Http\Response;
 
 class CatWeekMonthController extends Controller
 {
+    protected $catWeekMonthService;
+
+    public function __construct(CatWeekMonthService $catWeekMonthService)
+    {
+        $this->catWeekMonthService = $catWeekMonthService;
+    }
+
     public function index()
     {
-        $catWeekMonth = CatWeekMonth::all();
-        return CatWeekMonthResource::collection($catWeekMonth);
+        return $this->catWeekMonthService->all();
     }
 
     public function store(StoreCatWeekMonthRequest $request)
     {
-        $catWeekMonth = CatWeekMonth::create($request->validated());
-
-        return new CatWeekMonthResource($catWeekMonth);
+        return $this->catWeekMonthService->create($request->validated());
     }
 
     public function show(CatWeekMonth $catWeekMonth)
     {
-        return new CatWeekMonthResource($catWeekMonth);
+        return $this->catWeekMonthService->find($catWeekMonth);
     }
 
     public function update(UpdateCatWeekMonthRequest $request, CatWeekMonth $catWeekMonth)
     {
-        $catWeekMonth->update($request->validated());
-        return new CatWeekMonthResource($catWeekMonth);
+        return $this->catWeekMonthService->update($catWeekMonth, $request->validated());
     }
 
     public function destroy(CatWeekMonth $catWeekMonth)
     {
-        $catWeekMonth->delete();
+        $this->catWeekMonthService->delete($catWeekMonth);
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

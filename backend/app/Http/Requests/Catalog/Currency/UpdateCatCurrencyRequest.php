@@ -20,7 +20,7 @@ class UpdateCatCurrencyRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'active' => $this->input('active', true), // Default to true if not provided
+            //
         ]);
     }
 
@@ -32,9 +32,9 @@ class UpdateCatCurrencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'acronym' => ['sometimes', 'required', 'string', 'max:5'],
-            'active' => ['sometimes', 'required', 'boolean'],
+            'name' => ['sometimes', 'string', 'max:255'],
+            'acronym' => ['sometimes', 'string', 'max:5'],
+            'active' => ['sometimes', 'boolean'],
         ];
     }
 }
